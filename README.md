@@ -8,6 +8,7 @@ Net Core User Api Example. This is a base project trying to follow the best prac
  - InnoCV.DatabaseModel: Class library with the Database entities for Entity Framework. Also includes Mapping classes to map entity classes to view model classes.
  - InnoCV.Model: Includes View Model classes, custom exceptions, result codes and dictionary.
  - InnoCV.Infrastructure: Project with all the logic of the application. In this case the logic is only the user manager to do all the CRUD operations
+ - InnoCV.Test: Example unit testing project with a test for User Mapping class.
 
 ## Some details about the project
 
