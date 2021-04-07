@@ -20,3 +20,6 @@ Net Core User Api Example. This is a base project trying to follow the best prac
  - The View Model classes have been configured to do validation and the NetCore app is configured to lauch automatic validation in requests
  - There are some Results Code defined with corresponding messages and they are used also as HttpStatus Code for results
  - Database Context is configured to connect to an SQLite Database. Database will be created automatically if it doesn't exists
+
+
+> SQLite is not the best option to use in web application because it's a file resource and can cause problems when trying to open concurrently. This is just an example approach for simplify
