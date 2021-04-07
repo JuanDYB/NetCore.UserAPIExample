@@ -13,8 +13,8 @@ namespace InnoCV.Infrastructure.User
     /// </summary>
     public class UserManager
     {
-        private UserMapper UMapper = new UserMapper();
-        private InnoCVEntities Db;
+        private readonly InnoCVEntities Db;
+        private readonly UserMapper UMapper = new UserMapper();
 
         /// <summary>
         /// Constructor of UserManager
@@ -32,7 +32,7 @@ namespace InnoCV.Infrastructure.User
         public void AddUser(Model.ViewModel.User User)
         {
             T_USER UserEntity = UMapper.MapToEntity(User);
-            if (!Db.T_USER.Any(U => U.NAME.Equals(UserEntity.NAME)))
+            if (!UserNameExists(UserEntity.NAME))
             {
                 //Set Id to zero because database is set to autoincrement
                 UserEntity.OID = 0;
@@ -51,7 +51,7 @@ namespace InnoCV.Infrastructure.User
         /// <param name="User"></param>
         public void ModifyUser(Model.ViewModel.User User)
         {
-            if (Db.T_USER.Any(U => U.OID == User.Id))
+            if (UserIdExists(User.Id))
             {
                 T_USER NewUserEntity = UMapper.MapToEntity(User);
                 Db.Attach(NewUserEntity);
@@ -71,8 +71,8 @@ namespace InnoCV.Infrastructure.User
         /// <returns></returns>
         public Model.ViewModel.User GetUser(int UserId)
         {
-            T_USER UserEntity = Db.T_USER.Find(UserId);
-            if(UserEntity != null)
+            T_USER UserEntity = GetUserById(UserId);
+            if (UserEntity != null)
             {
                 return UMapper.MapToView(UserEntity);
             }
@@ -88,7 +88,7 @@ namespace InnoCV.Infrastructure.User
         /// <param name="UserId"></param>
         public void DeleteUser(int UserId)
         {
-            T_USER UserEntity = Db.T_USER.Find(UserId);
+            T_USER UserEntity = GetUserById(UserId);
             if (UserEntity != null)
             {
                 Db.T_USER.Remove(UserEntity);
@@ -123,6 +123,36 @@ namespace InnoCV.Infrastructure.User
         public Task<List<Model.ViewModel.User>> GetUsersAsyc()
         {
             return Task.FromResult(GetUsers());
+        }
+
+        /// <summary>
+        /// Check if exists any user with the given name
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        private bool UserNameExists(string Name)
+        {
+            return Db.T_USER.Any(U => U.NAME.Equals(Name));
+        }
+
+        /// <summary>
+        /// Check if User Id Exists
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        private bool UserIdExists(int Id)
+        {
+            return Db.T_USER.Any(U => U.OID == Id);
+        }
+
+        /// <summary>
+        /// Get User Entity by it's key
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        private T_USER GetUserById(int Id)
+        {
+            return Db.T_USER.Find(Id);
         }
     }
 }

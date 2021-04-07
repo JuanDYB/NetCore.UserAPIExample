@@ -9,9 +9,9 @@ namespace InnoCV.DatabaseModel.Database.Configuration
     /// </summary>
     internal class T_USER_Configuration : IEntityTypeConfiguration<T_USER>
     {
-        public void Configure(EntityTypeBuilder<T_USER> entity)
+        public void Configure(EntityTypeBuilder<T_USER> Entity)
         {
-            entity.HasIndex(U => U.OID).IsUnique(true);
+            Entity.HasIndex(U => U.OID).IsUnique(true);
         }
     }
 }
